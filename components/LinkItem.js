@@ -33,11 +33,15 @@ const LinkItem = (props) => {
 
   return (
     <LinkItemWrapper>
-      <p>{props.link.url}</p>
-      <Button>Copy</Button>
-      <Button onClick={() => deleteLinkFinal({ id: props.link.id })}>
-        delete
-      </Button>
+      <LinkTitle>{props.link.url}</LinkTitle>
+      <ButtonBar>
+        <Button variant="contained" color="secondary">
+          Copy
+        </Button>
+        <Button onClick={() => deleteLinkFinal({ id: props.link.id })}>
+          delete
+        </Button>
+      </ButtonBar>
     </LinkItemWrapper>
   );
 };
@@ -45,11 +49,20 @@ const LinkItem = (props) => {
 export default LinkItem;
 
 const LinkItemWrapper = styled.div`
+  width: 80%;
+  max-width: 500px;
+  margin: auto;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  margin: 20px;
   box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.1);
 `;
+
+const LinkTitle = styled.h3`
+  margin-left: 20px;
+`;
+
+const ButtonBar = styled.div``;

@@ -76,7 +76,7 @@ const FormWrapper = styled.form`
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  background-color: lightslategray;
+  background-color: #efefef;
 `;
 
 const UrlInputField = styled(TextField)`
