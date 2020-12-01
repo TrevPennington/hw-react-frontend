@@ -19,7 +19,7 @@ const LinkForm = () => {
     update(cache, { data: { createLink } }) {
       cache.modify({
         fields: {
-          allLink(existingLinks = [], { readField }) {
+          allLinks(existingLinks = [], { readField }) {
             const newLink = cache.writeFragment({
               data: createLink,
               fragment: gql`
@@ -85,5 +85,5 @@ const UrlInputField = styled(TextField)`
 
 const SubmitButton = styled(Button)`
   height: 50px;
-  margin: 10px;
+  margin: 20px !important;
 `;
