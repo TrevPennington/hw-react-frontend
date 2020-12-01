@@ -34,5 +34,5 @@ export default LinkList;
 
 const ListWrapper = styled.div`
   width: 100%;
-  margin-top: 30px;
+  margin-top: 70px;
 `;

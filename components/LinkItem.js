@@ -33,7 +33,7 @@ const LinkItem = (props) => {
 
   return (
     <LinkItemWrapper>
-      <LinkTitle>{props.link.url}</LinkTitle>
+      <LinkTitle>{props.link.slug}</LinkTitle>
       <ButtonBar>
         <Button variant="contained" color="secondary">
           Copy
@@ -50,7 +50,8 @@ export default LinkItem;
 
 const LinkItemWrapper = styled.div`
   width: 80%;
-  max-width: 500px;
+  max-width: 800px;
+  height: 90px;
   margin: auto;
   margin-bottom: 20px;
   display: flex;
@@ -65,4 +66,6 @@ const LinkTitle = styled.h3`
   margin-left: 20px;
 `;
 
-const ButtonBar = styled.div``;
+const ButtonBar = styled.div`
+  margin-right: 20px;
+`;

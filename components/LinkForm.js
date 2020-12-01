@@ -14,7 +14,9 @@ const ADD_LINK = gql`
 `;
 
 const LinkForm = () => {
+  const [buttonEnabled, setButtonEnabled] = useState(false);
   const [urlValue, setUrlValue] = useState("");
+  const [customSlugValue, setCustomSlugValue] = useState("");
   const [createLink] = useMutation(ADD_LINK, {
     update(cache, { data: { createLink } }) {
       cache.modify({
@@ -36,18 +38,42 @@ const LinkForm = () => {
     }
   });
 
+  const verifyLink = (props) => {
+    try {
+      new URL(
+        "https://codeburst.io/creating-custom-url-shortener-with-nodejs-de10bbbb89c7"
+      );
+    } catch (e) {
+      return false;
+    }
+    return true;
+  };
+
+  const submitLinkToShorten = (e) => {
+    e.preventDefault();
+
+    let verified = verifyLink(urlValue);
+    if (!verified) {
+      console.log("not a valid url");
+      return;
+    } else {
+      console.log("VALID");
+    }
+
+    createLink({
+      variables: {
+        url: urlValue,
+        slug: customSlugValue
+      }
+    });
+    setUrlValue("");
+  };
+
   return (
     <>
       <FormWrapper
         onSubmit={(e) => {
-          e.preventDefault();
-          createLink({
-            variables: {
-              url: urlValue,
-              slug: "slug"
-            }
-          });
-          setUrlValue("");
+          submitLinkToShorten(e);
         }}
       >
         <UrlInputField
@@ -58,6 +84,16 @@ const LinkForm = () => {
           label="URL to shorten"
           variant="outlined"
         ></UrlInputField>
+
+        <UrlInputField
+          type="text"
+          onChange={(e) => setCustomSlugValue(e.target.value)}
+          value={customSlugValue}
+          id="outlined-basic"
+          label="optional custom slug"
+          variant="outlined"
+        ></UrlInputField>
+
         <SubmitButton type="submit" variant="contained" color="primary">
           Shorten!
         </SubmitButton>
@@ -70,7 +106,7 @@ export default LinkForm;
 
 const FormWrapper = styled.form`
   width: 100%;
-  height: 200px;
+  height: 300px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -81,6 +117,7 @@ const FormWrapper = styled.form`
 
 const UrlInputField = styled(TextField)`
   width: 400px;
+  margin: 20px !important;
 `;
 
 const SubmitButton = styled(Button)`
