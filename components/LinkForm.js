@@ -105,18 +105,26 @@ export default LinkForm;
 
 const FormWrapper = styled.form`
   width: 100%;
-  height: 300px;
+  height: 350px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   background-color: #efefef;
+
+  @media (max-width: 1100px) {
+    flex-direction: column;
+  }
 `;
 
 const UrlInputField = styled(TextField)`
-  width: 400px;
+  width: 400px !important;
   margin: 20px !important;
+
+  @media (max-width: 700px) {
+    width: 90% !important;
+  }
 `;
 
 const SubmitButton = styled(Button)`

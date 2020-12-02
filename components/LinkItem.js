@@ -62,7 +62,7 @@ export default LinkItem;
 const LinkItemWrapper = styled.div`
   width: 80%;
   max-width: 800px;
-  height: 90px;
+  min-height: 90px;
   margin: auto;
   margin-bottom: 20px;
   display: flex;
@@ -71,10 +71,18 @@ const LinkItemWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+    padding: 20px;
+  }
 `;
 
 const LinkTitle = styled.h3`
   margin-left: 20px;
+  font-family: sans-serif;
+  font-size: 1em;
+  text-align: center;
 `;
 
 const ButtonBar = styled.div`
