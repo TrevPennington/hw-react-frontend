@@ -11,7 +11,7 @@ import {
 import App from "./App";
 
 const client = new ApolloClient({
-  uri: "https://5sh2x.sse.codesandbox.io/",
+  uri: "https://x8cvx.sse.codesandbox.io/",
   cache: new InMemoryCache()
 });
 
