@@ -38,11 +38,9 @@ const LinkForm = () => {
     }
   });
 
-  const verifyLink = (props) => {
+  const verifyLink = () => {
     try {
-      new URL(
-        "https://codeburst.io/creating-custom-url-shortener-with-nodejs-de10bbbb89c7"
-      );
+      new URL(urlValue);
     } catch (e) {
       return false;
     }
@@ -52,7 +50,7 @@ const LinkForm = () => {
   const submitLinkToShorten = (e) => {
     e.preventDefault();
 
-    let verified = verifyLink(urlValue);
+    let verified = verifyLink();
     if (!verified) {
       console.log("not a valid url");
       return;
@@ -67,6 +65,7 @@ const LinkForm = () => {
       }
     });
     setUrlValue("");
+    setCustomSlugValue("");
   };
 
   return (

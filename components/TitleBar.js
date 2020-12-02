@@ -19,5 +19,6 @@ const TitleBarWrapper = styled.div`
 `;
 
 const Title = styled.h2`
-  font-size: 1.5em;
+  font-size: 1.8em;
+  font-family: sans-serif;
 `;

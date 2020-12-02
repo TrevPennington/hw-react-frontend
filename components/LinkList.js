@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery, useMutation, gql } from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 import LinkItem from "./LinkItem";
 import styled from "styled-components";
 
@@ -22,7 +22,7 @@ const LinkList = () => {
       {data && (
         <>
           {data.allLinks.map((item, index) => (
-            <LinkItem link={item} />
+            <LinkItem link={item} key={index} />
           ))}
         </>
       )}

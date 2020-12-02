@@ -31,11 +31,22 @@ const LinkItem = (props) => {
     });
   };
 
+  const copyToClipBoard = (props) => {
+    //navigator.clipboard.writeText(props.text);
+    //^ this produces an error
+
+    alert("Copied the text: " + props.text);
+  };
+
   return (
     <LinkItemWrapper>
-      <LinkTitle>{props.link.slug}</LinkTitle>
+      <LinkTitle>{props.link.url}</LinkTitle>
       <ButtonBar>
-        <Button variant="contained" color="secondary">
+        <Button
+          onClick={() => copyToClipBoard({ text: props.link.url })}
+          variant="contained"
+          color="secondary"
+        >
           Copy
         </Button>
         <Button onClick={() => deleteLinkFinal({ id: props.link.id })}>
