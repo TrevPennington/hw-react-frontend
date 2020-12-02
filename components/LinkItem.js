@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMutation, gql } from "@apollo/client";
-import { Button } from "@material-ui/core";
+import { Button, Snackbar, Alert } from "@material-ui/core";
 import styled from "styled-components";
 
 const DELETE_LINK = gql`
@@ -11,6 +11,8 @@ const DELETE_LINK = gql`
 
 const LinkItem = (props) => {
   const [deleteLink] = useMutation(DELETE_LINK);
+  const [copyMessage, setCopyMessage] = useState("");
+  const [alertOpen, setAlertOpen] = useState(false);
 
   const deleteLinkFinal = (props) => {
     deleteLink({
@@ -32,10 +34,22 @@ const LinkItem = (props) => {
   };
 
   const copyToClipBoard = (props) => {
-    //navigator.clipboard.writeText(props.text);
-    //^ this produces an error
+    //solution from https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText
+    navigator.clipboard.writeText(props.text).then(
+      function () {
+        /* clipboard successfully set */
+        setCopyMessage("Copied the link: " + props.text);
+      },
+      function () {
+        /* clipboard write failed */
+        setCopyMessage("could not copy, clipboard access denied");
+      }
+    );
+    setAlertOpen(true);
+  };
 
-    alert("Copied the text: " + props.text);
+  const handleClose = () => {
+    setAlertOpen(false);
   };
 
   return (
@@ -53,6 +67,9 @@ const LinkItem = (props) => {
           delete
         </Button>
       </ButtonBar>
+      <Snackbar open={alertOpen} autoHideDuration={3000} onClose={handleClose}>
+        <CopyAlert severity="success">{copyMessage}</CopyAlert>
+      </Snackbar>
     </LinkItemWrapper>
   );
 };
@@ -87,4 +104,14 @@ const LinkTitle = styled.h3`
 
 const ButtonBar = styled.div`
   margin-right: 20px;
+`;
+
+const CopyAlert = styled.p`
+  background-color: #3f51bf;
+  color: #efefef;
+  font-family: sans-serif;
+  padding: 20px;
+  border: 1px solid #3f51bf;
+  border-radius: 10px;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
 `;

@@ -14,10 +14,16 @@ const ADD_LINK = gql`
 `;
 
 const LinkForm = () => {
-  const [buttonEnabled, setButtonEnabled] = useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [urlError, setUrlError] = useState(false);
   const [urlValue, setUrlValue] = useState("");
   const [customSlugValue, setCustomSlugValue] = useState("");
-  const [createLink] = useMutation(ADD_LINK, {
+
+  //https://www.apollographql.com/docs/react/data/mutations/
+  const [
+    createLink,
+    { loading: mutationLoading, error: mutationError }
+  ] = useMutation(ADD_LINK, {
     update(cache, { data: { createLink } }) {
       cache.modify({
         fields: {
@@ -31,6 +37,8 @@ const LinkForm = () => {
                 }
               `
             });
+            setUrlValue("");
+            setCustomSlugValue("");
             return [...existingLinks, newLink];
           }
         }
@@ -38,34 +46,33 @@ const LinkForm = () => {
     }
   });
 
-  const verifyLink = () => {
+  const verifyLink = (props) => {
+    setUrlValue(props.url);
+
+    //https://developer.mozilla.org/en-US/docs/Web/API/URL
     try {
-      new URL(urlValue);
+      new URL(props.url);
     } catch (e) {
+      setUrlError(true);
       return false;
     }
+    setUrlError(false);
+    setButtonDisabled(false);
     return true;
   };
 
   const submitLinkToShorten = (e) => {
     e.preventDefault();
 
-    let verified = verifyLink();
-    if (!verified) {
-      console.log("not a valid url");
-      return;
-    } else {
-      console.log("VALID");
-    }
-
     createLink({
       variables: {
         url: urlValue,
         slug: customSlugValue
       }
+    }).catch((e) => {
+      console.log(e);
+      return;
     });
-    setUrlValue("");
-    setCustomSlugValue("");
   };
 
   return (
@@ -77,11 +84,12 @@ const LinkForm = () => {
       >
         <UrlInputField
           type="text"
-          onChange={(e) => setUrlValue(e.target.value)}
+          onChange={(e) => verifyLink({ url: e.target.value })}
           value={urlValue}
           id="outlined-basic"
           label="URL to shorten"
           variant="outlined"
+          error={urlError}
         ></UrlInputField>
 
         <UrlInputField
@@ -93,9 +101,20 @@ const LinkForm = () => {
           variant="outlined"
         ></UrlInputField>
 
-        <SubmitButton type="submit" variant="contained" color="primary">
+        <SubmitButton
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={buttonDisabled}
+        >
           Shorten!
         </SubmitButton>
+        {mutationLoading && <LoadingMessage>Loading...</LoadingMessage>}
+        {mutationError && (
+          <ErrorMessage>
+            This slug already exists, please choose a different one!
+          </ErrorMessage>
+        )}
       </FormWrapper>
     </>
   );
@@ -130,4 +149,13 @@ const UrlInputField = styled(TextField)`
 const SubmitButton = styled(Button)`
   height: 50px;
   margin: 20px !important;
+`;
+
+const LoadingMessage = styled.p`
+  font-family: sans-serif;
+`;
+
+const ErrorMessage = styled.p`
+  font-family: sans-serif;
+  color: red;
 `;
